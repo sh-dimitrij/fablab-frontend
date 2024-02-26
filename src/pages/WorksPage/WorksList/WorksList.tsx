@@ -29,14 +29,16 @@ const WorksList = () => {
     ))
 
     return (
-        <div className="works-list-wrapper">
+        <div className="works-wrapper">
+            <div className="works-list-wrapper">
 
-            <WorksFilters refetch={refetch}/>
+                <WorksFilters refetch={refetch}/>
 
-            <div className="works-list">
-                { cards }
+                <div className="works-list">
+                    { cards }
+                </div>
+
             </div>
-
         </div>
     )
 }

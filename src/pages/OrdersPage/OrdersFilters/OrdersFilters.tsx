@@ -5,12 +5,13 @@ import {useAuth} from "../../../hooks/users/useAuth";
 import {useOrders} from "../../../hooks/orders/useOrders";
 import CustomDatePicker from "../../../components/CustomDatePicker/CustomDatePicker";
 import CustomButton from "../../../components/CustomButton/CustomButton";
+import SearchBar from "../../../components/SearchBar/SearchBar";
 
 const OrdersFilters = ({refetch}) => {
 
     const {is_moderator} = useAuth()
 
-    const {status, setStatus, date_start, setDateStart, date_end, setDateEnd} = useOrders()
+    const {status, setStatus, date_start, setDateStart, date_end, setDateEnd, user, setUser} = useOrders()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -40,6 +41,8 @@ const OrdersFilters = ({refetch}) => {
                 <CustomDatePicker placeholder="От" value={date_start} setValue={setDateStart}/>
 
                 <CustomDatePicker placeholder="До" value={date_end} setValue={setDateEnd}/>
+
+                {is_moderator && <SearchBar query={user} setQuery={setUser} placeholder="Поиск по пользователям..." onSubmit={handleSubmit} />}
 
                 <CustomButton bg={variables.primary}>
                     Применить

@@ -1,8 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit"
+import {Order} from "../../utils/types";
 
-const initialState = {
+interface IOrderState {
+	order: Order | undefined,
+	order_id: number | undefined,
+	name: string,
+	description: string,
+	date_perform: string
+}
+
+const initialState: IOrderState = {
 	order: undefined,
-	order_id: undefined
+	order_id: undefined,
+	name: "",
+	description: "",
+	date_perform: ""
 };
 
 const orderSlice = createSlice({
@@ -12,23 +24,24 @@ const orderSlice = createSlice({
 		updateOrder(state, action) {
 			state.order = action.payload
 		},
-		updatePassegeDate(state, action) {
-			state.order.passege_date = action.payload
-		},
-		updatePersonCount(state, action) {
-			state.order.person_count = action.payload
+		updateWorks(state, action) {
+			state.order.works = action.payload
 		},
 		updateOrderId(state, action) {
 			state.order_id = action.payload
+		},
+		updateName(state, action) {
+			state.name = action.payload
+		},
+		updateDescription(state, action) {
+			state.description = action.payload
+		},
+		updateDatePerform(state, action) {
+			state.date_perform = action.payload
 		}
 	}
 })
 
-export const {
-	updateOrder,
-	updatePassegeDate,
-	updatePersonCount,
-	updateOrderId
-} = orderSlice.actions;
+export const {updateOrder, updateWorks, updateOrderId, updateName, updateDescription, updateDatePerform} = orderSlice.actions;
 
 export default orderSlice.reducer;

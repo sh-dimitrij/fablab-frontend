@@ -1,6 +1,10 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {
-	updateWork
+	updateWork,
+	updateName,
+	updateDescription,
+	updatePrice,
+	updateImage
 } from "../../store/works/workSlice";
 import {api} from "../../utils/api";
 
@@ -11,6 +15,22 @@ export function useWork() {
 
 	const setWork = (value) => {
 		dispatch(updateWork(value))
+	}
+
+	const setName = (value) => {
+		dispatch(updateName(value))
+	}
+
+	const setDescription = (value) => {
+		dispatch(updateDescription(value))
+	}
+
+	const setPrice = (value) => {
+		dispatch(updatePrice(value))
+	}
+
+	const setImage = (value) => {
+		dispatch(updateImage(value))
 	}
 
 	const fetchWork = async (id) => {
@@ -24,6 +44,10 @@ export function useWork() {
 	return {
 		work,
 		setWork,
-		fetchWork
+		fetchWork,
+		setName,
+		setDescription,
+		setPrice,
+		setImage
 	};
 }

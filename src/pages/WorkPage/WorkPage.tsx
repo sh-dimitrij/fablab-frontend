@@ -7,13 +7,10 @@ const WorkPage = () => {
 
     const { id } = useParams<{id: string}>();
     
-    const {work, fetchWork, setWork} = useWork()
+    const {work, fetchWork} = useWork()
     
     useEffect(() => {
         id && fetchWork(id)
-        return () => {
-            setWork(undefined)
-        }
     }, [])
 
     if (work == undefined) {
@@ -24,7 +21,7 @@ const WorkPage = () => {
         )
     }
 
-    const img = `http://127.0.0.1:8000/api/works/${id}/image/`
+    const img = `http://192.168.1.62:8000/api/works/${id}/image/`
 
     return (
         <div className="page-details-wrapper">
@@ -42,15 +39,18 @@ const WorkPage = () => {
             <div className="right">
 
                 <div className="info-container">
-                    
-                    <h2>{work?.name}</h2> <br/>
 
-                    <span>Адрес: {work?.location}</span><br/>
+                    <h2>{work.name}</h2>
 
-                    <span>Режим работы: С {work?.open_hours} до {work?.close_hours}</span>
+                    <br />
 
+                    <span>Описание: {work.description}</span>
+
+                    <br />
+
+                    <span>Цена: {work.price} рублей</span>
                 </div>
-                
+
             </div>
 
         </div>

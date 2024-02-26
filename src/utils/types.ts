@@ -1,12 +1,12 @@
 export interface Work {
     id: number,
     name: string,
+    description: string,
+    price: string,
     status: number,
-    location: string,
-    open_hours: string,
-    close_hours: string,
     image: string
 }
+
 export interface User {
     id: number,
     name: string,
@@ -21,9 +21,7 @@ export interface Order {
     date_created: string,
     date_formation: string,
     date_complete: string,
-    name: string,
-    passege_date: string,
-    person_count: number
+    date_end: string
 }
 
 export interface Option {

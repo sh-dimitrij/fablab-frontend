@@ -5,17 +5,20 @@ import {useAuth} from "../../hooks/users/useAuth";
 import {useOrder} from "../../hooks/orders/useOrder";
 import CustomButton from "../CustomButton/CustomButton";
 import {variables} from "../../utils/consts";
+import {useWorks} from "../../hooks/works/useWorks";
 
-const WorkCard = ({ work, refetch }: {work:Work}) => {
-    
+const WorkCard = ({ work }: {work:Work}) => {
+
     const {is_authenticated, is_moderator} = useAuth()
 
     const {is_draft, addWorkToOrder, deleteWorkFromOrder} = useOrder()
 
+    const {searchWorks} = useWorks()
+
     const handleAddWork = async (e) => {
         e.preventDefault()
         await addWorkToOrder(work)
-        refetch()
+        await searchWorks()
     }
 
     const handleDeleteWorkFromOrder = async (e) => {
@@ -40,21 +43,21 @@ const WorkCard = ({ work, refetch }: {work:Work}) => {
 
                 <div className="content-bottom">
 
-
                     <Link to={`/works/${work.id}`}>
                         <CustomButton bg={variables.primary}>
                             Подробнее
                         </CustomButton>
                     </Link>
 
-                    {is_authenticated && !is_moderator && location.pathname.includes("works") &&
+
+                    {is_authenticated && !is_moderator && location.pathname.includes("works-list") &&
                         <CustomButton onClick={handleAddWork} bg={variables.green}>Добавить</CustomButton>
                     }
 
                     {is_authenticated && !is_moderator && is_draft && location.pathname.includes("orders") &&
                         <CustomButton onClick={handleDeleteWorkFromOrder} bg={variables.red}>Удалить</CustomButton>
                     }
-                    
+
                 </div>
 
             </div>

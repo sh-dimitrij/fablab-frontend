@@ -19,9 +19,7 @@ const ProfilePage = () => {
 	}, [])
 
 	const doLogOut = async () => {
-
 		await logOut()
-
 		navigate("/")
 	}
 

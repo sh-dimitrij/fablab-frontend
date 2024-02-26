@@ -14,19 +14,23 @@ import {useAuth} from "./hooks/users/useAuth";
 import OrderConstructor from "./components/OrderConstructor/OrderConstructor";
 import OrderPage from "./pages/OrderPage/OrderPage";
 import OrdersPage from "./pages/OrdersPage/OrdersPage";
+import WorkEditPage from "./pages/WorkEditPage/WorkEditPage";
+import WorkAddPage from "./pages/WorkAddPage/WorkAddPage";
 import WorksList from "./pages/WorksPage/WorksList/WorksList";
+import WorksTable from "./pages/WorksPage/WorksTableWrapper/WorksTable/WorksTable";
+import WorksTableWrapper from "./pages/WorksPage/WorksTableWrapper/WorksTableWrapper";
 
 
 const TopPanelWrapper = () => {
 
-    const {is_authenticated} = useAuth()
+    const {is_authenticated, is_moderator} = useAuth()
 
     const location = useLocation()
 
     return (
         <div className="top-panel-wrapper">
             <Breadcrumbs />
-            {is_authenticated && location.pathname.endsWith("works") && <OrderConstructor /> }
+            {is_authenticated && !is_moderator && location.pathname.endsWith("works-list") && <OrderConstructor /> }
         </div>
     )
 }
@@ -55,13 +59,19 @@ function App() {
 
                                 <Routes>
 
-                                    <Route path="/" element={<Navigate to="/works" replace />} />
+                                    <Route path="/" element={<Navigate to="/works-list" replace />} />
 
                                     <Route path="/profile" element={<ProfilePage />} />
 
-                                    <Route path="/works" element={<WorksList />} />
+                                    <Route path="/works-list" element={<WorksList />} />
+
+                                    <Route path="/works-table" element={<WorksTableWrapper />} />
+
+                                    <Route path="/works/add" element={<WorkAddPage />} />
 
                                     <Route path="/works/:id" element={<WorkPage />} />
+
+                                    <Route path="/works/:id/edit" element={<WorkEditPage />} />
 
                                     <Route path="/profile" element={<ProfilePage />} />
 

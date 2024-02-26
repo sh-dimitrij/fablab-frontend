@@ -1,6 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit"
+import {Work} from "../../utils/types";
 
-const initialState = {
+interface IWorksState {
+	works: Array<Work>
+	query: string
+}
+
+const initialState: IWorksState = {
 	works: [],
 	query: ""
 };

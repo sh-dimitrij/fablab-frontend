@@ -18,23 +18,35 @@ const Breadcrumbs = () => {
     const resetSelectedWork = () => setWork(undefined)
 
     const topics = {
-        "works": "Работы",
-        "works-table": "Таблица работ",
-        "orders": "Заказ",
+        "works-list": "Работы",
+        "works-table": "Работы",
+        "orders": "Заказы",
         "home": "Главная",
         "login": "Вход",
         "register": "Регистрация",
         "profile": "Личный кабинет"
     }
 
-    const exclude_topics = ["edit"]
-
     const crumbs = location.pathname.split('/').filter(crumb => crumb !== '').map(crumb => {
 
         currentLink += `/${crumb}`
 
-        if (exclude_topics.find(x => x == crumb)) {
+        if (crumb == "edit") {
             return
+        }
+
+        if (crumb == "works") {
+            return (
+                <div className={"crumb"} key={crumb}>
+
+                    <Link to="works-list">
+                        Работы
+                    </Link>
+
+                    <FaChevronRight className={"chevron-icon"}/>
+
+                </div>
+            )
         }
 
         if (Object.keys(topics).find(x => x == crumb)) {
@@ -57,7 +69,7 @@ const Breadcrumbs = () => {
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        Новый заказ
+                        Новая декларация
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -73,7 +85,7 @@ const Breadcrumbs = () => {
                 <div className={"crumb"} key={crumb}>
 
                     <Link to={currentLink}>
-                        {is_draft ? "Новый заказ" : "Заказ №" + order?.id}
+                        {is_draft ? "Новый заказ" : "Заявка №" + order?.id}
                     </Link>
 
                     <FaChevronRight className={"chevron-icon"}/>
@@ -104,7 +116,7 @@ const Breadcrumbs = () => {
 
                 <div className="crumb">
 
-                    <Link to={"/works"}>
+                    <Link to="/">
                         <FaHome className="home-icon" />
                     </Link>
 

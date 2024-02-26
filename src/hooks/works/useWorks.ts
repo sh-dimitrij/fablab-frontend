@@ -42,8 +42,8 @@ export function useWorks() {
 		return data["works"]
 	}
 
-	const deleteWork = async (work) => {
-		await api.delete(`works/${work.id}/delete/`, {
+	const deleteWork = async (work_id) => {
+		await api.delete(`works/${work_id}/delete/`, {
 			headers: {
 				'authorization': access_token
 			}

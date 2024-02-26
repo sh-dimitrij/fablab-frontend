@@ -2,8 +2,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
 	updateOrder,
 	updateOrderId,
-	updatePassegeDate,
-	updatePersonCount
+	updateWorks,
+	updateName,
+	updateDescription,
+	updateDatePerform
 } from "../../store/orders/orderSlice";
 import {useToken} from "../users/useToken";
 import {api} from "../../utils/api";
@@ -15,10 +17,13 @@ export function useOrder() {
 
 	const order = useSelector(state => state.order.order)
 	const order_id = useSelector(state => state.order.order_id)
-
-	const navigate = useNavigate()
+	const name = useSelector(state => state.order.name)
+	const description = useSelector(state => state.order.description)
+	const date_perform = useSelector(state => state.order.date_perform)
 
 	const is_draft = order?.status == 1
+
+	const navigate = useNavigate()
 
 	const dispatch = useDispatch()
 
@@ -26,16 +31,24 @@ export function useOrder() {
 		dispatch(updateOrder(value))
 	}
 
-	const setPassegeDate = (value) => {
-		dispatch(updatePassegeDate(value))
-	}
-
-	const setPersonCount = (value) => {
-		dispatch(updatePersonCount(value))
+	const setWorks = (value) => {
+		dispatch(updateWorks(value))
 	}
 
 	const setOrderId = (value) => {
 		dispatch(updateOrderId(value))
+	}
+
+	const setName = (value) => {
+		dispatch(updateName(value))
+	}
+
+	const setDescription = (value) => {
+		dispatch(updateDescription(value))
+	}
+
+	const setDatePerform = (value) => {
+		dispatch(updateDatePerform(value))
 	}
 
 	const sendOrder = async () => {
@@ -49,6 +62,8 @@ export function useOrder() {
 		if (response.status == 200)
 		{
 			setOrder(undefined)
+			setOrderId(undefined)
+			navigate("/orders")
 		}
 	}
 
@@ -63,18 +78,20 @@ export function useOrder() {
 		if (response.status == 200)
 		{
 			setOrder(undefined)
+			setOrderId(undefined)
+			navigate("/")
 		}
 
 	}
 
 	const saveOrder = async () => {
 
-		const form_data = new FormData()
+		const formData = new FormData()
+		formData.append("name", name)
+		formData.append("description", description)
+		formData.append("date_perform", date_perform)
 
-		form_data.append('passege_date', order.passege_date)
-		form_data.append('person_count', order.person_count)
-
-		await api.put(`orders/${order.id}/update/`, form_data, {
+		await api.put(`orders/${order.id}/update/`, formData, {
 			headers: {
 				'authorization': access_token
 			}
@@ -91,6 +108,9 @@ export function useOrder() {
 		})
 
 		setOrder(data)
+		setName(data["name"])
+		setDescription(data["description"])
+		setDatePerform(data["date_perform"].split('T')[0])
 	}
 
 	const addWorkToOrder = async (work) => {
@@ -108,7 +128,7 @@ export function useOrder() {
 			}
 		})
 
-		if (response.status == 200) {
+		if (response.status == 200){
 			await fetchOrder(order_id)
 		} else if (response.status == 201) {
 			navigate("/")
@@ -119,15 +139,20 @@ export function useOrder() {
 		order,
 		order_id,
 		is_draft,
+		name,
+		description,
+		date_perform,
 		setOrder,
-		setPassegeDate,
-		setPersonCount,
 		saveOrder,
 		sendOrder,
 		deleteOrder,
 		fetchOrder,
 		addWorkToOrder,
 		deleteWorkFromOrder,
-		setOrderId
+		setOrderId,
+		setWorks,
+		setName,
+		setDescription,
+		setDatePerform
 	};
 }

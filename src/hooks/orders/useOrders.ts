@@ -47,7 +47,7 @@ export function useOrders() {
 			}
 		})
 
-		return data.filter(order => order.owner.name.includes(user))
+		return data.filter(order => order.owner.includes(user))
 
 	}
 

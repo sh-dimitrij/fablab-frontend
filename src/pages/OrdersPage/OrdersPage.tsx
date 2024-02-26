@@ -11,7 +11,7 @@ const OrdersPage = () => {
 
     useEffect(() => {
         if (!is_authenticated) {
-            navigate("/")
+            navigate("/works")
         }
     }, [])
 

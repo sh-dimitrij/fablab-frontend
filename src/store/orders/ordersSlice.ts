@@ -1,9 +1,16 @@
 import {createSlice} from "@reduxjs/toolkit"
 
-const initialState= {
+interface IOrdersState {
+	status: number,
+	date_start: string,
+	date_end: string,
+	user: string
+}
+
+const initialState: IOrdersState = {
 	status: -1,
 	date_start: "2013-10-12",
-	date_end: "2024-01-25",
+	date_end: "2025-01-25",
 	user: ""
 };
 

@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useOrder} from "../../hooks/orders/useOrder";
-import {useNavigate, useParams} from "react-router-dom"
+import {useParams} from "react-router-dom"
 import WorkCard from "../../components/WorkCard/WorkCard";
 import "./OrderPage.sass"
 import {useAuth} from "../../hooks/users/useAuth";
@@ -8,34 +8,25 @@ import {STATUSES, variables} from "../../utils/consts";
 import {ru} from "../../utils/momentLocalization";
 import moment from "moment";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import CustomInput from "../../components/CustomInput/CustomInput";
-import CustomDatePicker from "../../components/CustomDatePicker/CustomDatePicker";
+import {format_date_end} from "../../utils/utils";
 
 const OrderPage = () => {
 
-    const {is_authenticated, is_moderator} = useAuth()
-
-    const navigate = useNavigate()
+    const {is_moderator} = useAuth()
 
     const { id } = useParams<{id: string}>();
 
-    const {order, setPassegeDate, setPersonCount, fetchOrder, saveOrder, sendOrder, deleteOrder, setOrder, setOrderId} = useOrder()
+    const {order, fetchOrder, saveOrder, sendOrder, deleteOrder, setOrder} = useOrder()
 
     useEffect(() => {
-
-        if (!id || !is_authenticated) {
-            navigate("/")
-        }
-
-        setOrderId(id)
-        fetchOrder(id)
-
+        id && fetchOrder(id)
+        
         return () => {
             setOrder(undefined)
         };
     }, [])
 
-    if (order == undefined)
+    if (id == undefined || order == undefined)
     {
         return (
             <div className="order-page-wrapper">
@@ -47,26 +38,19 @@ const OrderPage = () => {
     const onSendOrder = async() => {
         await saveOrder()
         await sendOrder()
-        navigate("/orders")
-    }
-
-    const onDeleteOrder = async () => {
-        await deleteOrder()
-        navigate("/works")
     }
 
     const cards = order.works.map(work  => (
         <WorkCard work={work} key={work.id} />
     ))
 
-
     const ButtonsContainer = () => {
         return (
             <div className="buttons-wrapper">
 
-                <CustomButton onClick={onSendOrder} bg={variables.primary}>Отправить</CustomButton>
+                <CustomButton onClick={onSendOrder} bg={variables.green}>Отправить</CustomButton>
 
-                <CustomButton onClick={onDeleteOrder} bg={variables.red}>Удалить</CustomButton>
+                <CustomButton onClick={deleteOrder} bg={variables.red}>Удалить</CustomButton>
 
             </div>
         )
@@ -81,14 +65,16 @@ const OrderPage = () => {
 
             <div className="order-works-wrapper">
                 <div className="top">
-                    <h3>{is_draft ? "Новый заказ" :  "Заказ №" + order.id}</h3>
+                    <h3>{is_draft ? "Новый заказ" : "Заявка №" + order.id}</h3>
                 </div>
 
                 <div className="order-info-container">
                     <span>Статус: {STATUSES.find(status => status.id == order.status).name}</span>
                     <span>Дата создания: {moment(order.date_created).locale(ru()).format("D MMMM HH:mm")}</span>
+                    {[2, 3, 4].includes(order.status) && <span>Дата окончания работ: {format_date_end(order.date_end)}</span> }
                     {[2, 3, 4].includes(order.status) && <span>Дата формирования: {moment(order.date_formation).locale(ru()).format("D MMMM HH:mm")}</span>}
                     {completed && <span>Дата завершения: {moment(order.date_complete).locale(ru()).format("D MMMM HH:mm")}</span> }
+                    {is_moderator && <span>Пользователь: {order.owner.name}</span> }
                 </div>
 
                 <div className="title">

@@ -20,14 +20,14 @@ const LoginPage = () => {
         const flag = await login(formData)
 
         if (flag) {
-            navigate("/works")
+            navigate("/")
         }
     }
 
     const handleAuth = async () => {
         const flag = await auth()
         if (flag) {
-            navigate("/works")
+            navigate("/")
         }
     }
 
